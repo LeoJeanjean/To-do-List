@@ -1,41 +1,39 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
   </div>
+    <div class="form-outline flex-fill">
+        <input type="text" id="form2" class="barre1" v-model="newList" placeholder="Nom de la liste"/>
+        <button type="button" class="btn btn-info ms-2" @click="AddList">Créer une nouvelle liste</button>
+    </div>
+    <li class="componentContainer" v-for="(list, index) in lists" :key="list">
+        <Todolist v-bind:listName="list" @remove-list='RemoveList(index)'/>
+    </li>
 </template>
 
 <script>
+import Todolist from './Todolist.vue';
 export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
-  }
+    name: "HelloWorld",
+    props: {
+        msg: String
+    },
+    components: { Todolist },
+    methods: {
+        AddList() {
+            this.lists.push(this.newList);
+            this.newList = "";
+        },
+        RemoveList(listIndex) {
+            this.lists.splice(listIndex, 1);
+        }
+    },
+    data: function() {
+        return {
+            lists: [],
+            newList: ""
+        }
+    }
 }
 </script>
 
@@ -54,5 +52,30 @@ li {
 }
 a {
   color: #42b983;
+}
+.barre1{
+  display: block;
+  width: 50%;
+  padding: 0.375rem 0.75rem;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border-radius: 0.375rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.btn{
+  margin-top: 8px;
+}
+.componentContainer{
+  width: 100%;
 }
 </style>
